@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <button v-bind:title="message1">
+        鼠标悬停在此几秒钟查看此处动态绑定的提示信息
+    </button>
+    <button v-bind:title="message2">
+        鼠标悬停在此几秒钟查看此处动态绑定的提示信息
+    </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+<script type="text/javascript">
+    var MyVue = new Vue({
+        el:"#app",
+        /*Model：数据*/
+        data:{
+            message1:"页面1处加载于"+ new Date().toLocaleString(),
+            message2:"页面2处加载于"+ new Date().toLocaleString()
+        }
+    });
+</script>
+</body>
+</html>

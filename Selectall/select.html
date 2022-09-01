@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        {{goodsChoose}}
+        <hr>
+        <table cellspacing="0" cellpadding="20" border="4">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox">SelectAll/Select None
+                    </th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Operate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in goods">
+                    <td><input type="checkbox" :value="item" v-model="goodsChoose"></td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.price}}</td>
+                    <td><button>Delete</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        <button>Select Invert</button>
+                        <button>Click and Del</button>
+                    </td>
+                    <td colspan="4">Use this table to practice.</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el:"#root",
+            data: {
+                // 默认商品
+                goods: [
+                    {id:1, title: "Jack", price: 20},
+                    {id:2, title: "Rose", price: 166},
+                ],
+                // 勾选商品
+                goodsChoose: [
+
+                ]
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>
