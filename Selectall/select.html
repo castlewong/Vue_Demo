@@ -19,7 +19,10 @@
             <thead>
                 <tr>
                     <th>
-                        <input type="checkbox">SelectAll/Select None
+                        <!-- 结论: v-model 和事件一起写事 想要获取v-model最新数据 @chang
+                        执行顺序 @click v-model @change
+                        全选 -->
+                        <input type="checkbox" v-model="allStatus" @change="changeStatusFn">SelectAll/Select None
                     </th>
                     <th>ID</th>
                     <th>Title</th>
@@ -28,18 +31,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in goods">
+                <tr v-for="(item, index) in goods">
                     <td><input type="checkbox" :value="item" v-model="goodsChoose"></td>
                     <td>{{item.id}}</td>
                     <td>{{item.title}}</td>
                     <td>{{item.price}}</td>
-                    <td><button>Delete</button></td>
+                    <!-- index 3 调用 实参-->
+                    <td><button @click="delFn(index)">Delete</button></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
                     <td>
-                        <button>Select Invert</button>
+                        <!-- 反选 -->
+                        <button @click="invertChooseFn">Select Invert</button>
                         <button>Click and Del</button>
                     </td>
                     <td colspan="4">Use this table to practice.</td>
@@ -56,14 +61,46 @@
                 goods: [
                     {id:1, title: "Jack", price: 20},
                     {id:2, title: "Rose", price: 166},
+                    {id:2, title: "Reacher", price: 166},
+
                 ],
+                // select all or select none; 绑定事件用click还是change?
+                allStatus: false,
                 // 勾选商品
                 goodsChoose: [
-
+                
                 ]
             },
             methods: {
-
+                // index 1 定义的 形参
+                delFn(index){
+                    // 从数组中删除一个
+                    // 语法: 数组.splice(index, num)
+                    // index 2 
+                    this.goods.splice(index, 1)
+                },
+                changeStatusFn(){
+                    this.goodsChoose = this.allStatus ? this.goods : []
+                },
+                invertChooseFn(){
+                    // 3 遍历体外: 面定义变量temp 将不在的还没打钩的 push到temp里面
+                    let temp = []
+                    //1遍历goods 
+                    this.goods.forEach(item => {
+                    //2遍历体通过indexOf检查是否在勾选商品goodschoose
+                        //在 已经打钩的呃
+                        //不在还没打钩的
+                        //语法: 数组.indexOf(值)
+                        //返回: 在 返回索引 不在 返回-1
+                        if(this.goodsChoose.indexOf(item)==-1){
+                            temp.push(item)
+                        }
+                    })
+                    //在 已经打钩 不在 还没打钩
+                    //3遍历体外面定义变量temp 将不在的且还没打钩的 push到temp里面
+                    //4重置 勾选商品goodschoose 为temp里的数据
+                        this.goodsChoose = temp
+                }
             }
         })
     </script>
