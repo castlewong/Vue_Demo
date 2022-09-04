@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
         }
     </style>
 </head>
+
 <body>
     <div id="root">
         {{goodsChoose}}
@@ -21,7 +23,17 @@
                     <th>
                         <!-- 结论: v-model 和事件一起写事 想要获取v-model最新数据 @chang
                         执行顺序 @click v-model @change
-                        全选 -->
+                        全选
+                        选择删除: 一个数组删除了某值之后 数组长度会变 arr.length
+                        解决: 从屁股后面删除
+                    实例: let arr = [1,2,3]
+                          for (let i=0; i<arr.length; i++){
+                            if (i==1||i==2){
+                                arr.splice(i, 1)
+                            }
+                          }
+                    解决方案: let i=arr.length-1; i>=0; i--
+                        -->
                         <input type="checkbox" v-model="allStatus" @change="changeStatusFn">SelectAll/Select None
                     </th>
                     <th>ID</th>
@@ -45,7 +57,7 @@
                     <td>
                         <!-- 反选 -->
                         <button @click="invertChooseFn">Select Invert</button>
-                        <button>Click and Del</button>
+                        <button @click="delChooseFn">Click and Del</button>
                     </td>
                     <td colspan="4">Use this table to practice.</td>
                 </tr>
@@ -55,54 +67,72 @@
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
         const vm = new Vue({
-            el:"#root",
+            el: "#root",
             data: {
                 // 默认商品
                 goods: [
-                    {id:1, title: "Jack", price: 20},
-                    {id:2, title: "Rose", price: 166},
-                    {id:2, title: "Reacher", price: 166},
+                    { id: 1, title: "Jack", price: 20 },
+                    { id: 2, title: "Rose", price: 166 },
+                    { id: 2, title: "Reacher", price: 166 },
 
                 ],
                 // select all or select none; 绑定事件用click还是change?
                 allStatus: false,
                 // 勾选商品
                 goodsChoose: [
-                
+
                 ]
             },
             methods: {
                 // index 1 定义的 形参
-                delFn(index){
+                delFn(index) {
                     // 从数组中删除一个
                     // 语法: 数组.splice(index, num)
                     // index 2 
                     this.goods.splice(index, 1)
                 },
-                changeStatusFn(){
+                changeStatusFn() {
                     this.goodsChoose = this.allStatus ? this.goods : []
                 },
-                invertChooseFn(){
+                invertChooseFn() {
                     // 3 遍历体外: 面定义变量temp 将不在的还没打钩的 push到temp里面
                     let temp = []
                     //1遍历goods 
                     this.goods.forEach(item => {
-                    //2遍历体通过indexOf检查是否在勾选商品goodschoose
+                        //2遍历体通过indexOf检查是否在勾选商品goodschoose
                         //在 已经打钩的呃
                         //不在还没打钩的
                         //语法: 数组.indexOf(值)
                         //返回: 在 返回索引 不在 返回-1
-                        if(this.goodsChoose.indexOf(item)==-1){
+                        if (this.goodsChoose.indexOf(item) == -1) {
+                            //3遍历体外面定义变量temp 将不在的且还没打钩的 push到temp里面
                             temp.push(item)
                         }
                     })
                     //在 已经打钩 不在 还没打钩
-                    //3遍历体外面定义变量temp 将不在的且还没打钩的 push到temp里面
                     //4重置 勾选商品goodschoose 为temp里的数据
-                        this.goodsChoose = temp
-                }
+                    this.goodsChoose = temp
+                },
+                delChooseFn() {
+                    //1 遍历所有商品
+                    for (let i = this.goods.length - 1; i >= 0; i--) 
+                    {
+                        let item = this.goods[i]
+                        //2 检查当前商品item是否在勾选商品goodsChoose中
+
+                        if(this.goodsChoose.indexOf(item) != -1)
+                        {
+                            this.goods.splice(i,1)
+                        }
+                    }
+                    // 不在不管 在 从所有商品中删除 从勾选商品中删除
+                    this.goodshoose=[]
+                    //留心 从屁股开始删除 否则会存在bug
+
+                },
             }
         })
     </script>
 </body>
+
 </html>
